@@ -1,7 +1,7 @@
 /* Global styles */
 :root{
   --bg:black;
-  --fg:white;
+  --fg:#c9ac60; /* gold tone */
 }
 
 * { box-sizing: border-box; }
@@ -31,7 +31,8 @@ html, body {
 
 /* Dot separators */
 .dot {
-  color: rgba(255,255,255,0.6);
+  color: var(--fg);
+  opacity: 0.75;
   font-size: clamp(1rem, 2.2vw, 1.25rem);
   line-height: 1;
   user-select: none;
@@ -44,19 +45,19 @@ html, body {
   text-align: center;
   font-weight: 400;            /* Regular */
   text-decoration: none;
-  color: white;
+  color: var(--fg);
   text-transform: uppercase;
   letter-spacing: 0.15em;
   font-size: clamp(0.9rem, 2vw, 1.1rem);
   padding-bottom: 2px;
   border-bottom: 1px solid transparent;
   transition: opacity .2s ease, border-color .2s ease, transform .1s ease;
-  text-shadow: 0 0 10px rgba(0,0,0,.35);
+  text-shadow: 0 0 10px rgba(0,0,0,.25);
 }
 .link:hover,
 .link:focus{
-  opacity: .9;
-  border-color: rgba(255,255,255,.25);
+  opacity: .85;
+  border-color: rgba(201,172,96,.4); /* soft gold underline on hover */
   outline: none;
   transform: translateY(-1px);
 }
@@ -88,4 +89,5 @@ html, body {
   font-weight: 300;   /* Header Light */
   text-transform: uppercase;
   letter-spacing: 0.18em;
+  color: var(--fg);
 }
