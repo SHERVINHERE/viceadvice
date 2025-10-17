@@ -1,0 +1,69 @@
+/* Global styles */
+:root{
+  --bg:black;
+  --fg:white;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "Josefin Sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  font-weight: 400; /* Body Regular */
+}
+
+.wrap{
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 6vh 4vw;
+  gap: 3rem;
+}
+
+/* Hero image (16:9 portrait) responsive sizing */
+.hero{
+  width: min(80vw, 520px);
+  height: auto;
+  display: block;
+  border: 0;
+  /* Ensures no white outline or unexpected gaps on some browsers */
+  background: black;
+}
+
+/* Links row */
+.links{
+  display: flex;
+  gap: clamp(1rem, 4vw, 2.5rem);
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Page Link Regular */
+.link{
+  font-weight: 400;
+  text-decoration: none;
+  color: white;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+  transition: opacity .2s ease, border-color .2s ease;
+}
+.link:hover,
+.link:focus{
+  opacity: .85;
+  border-color: rgba(255,255,255,.25);
+  outline: none;
+}
+
+/* Utility header style if needed anywhere */
+.hdr{
+  font-weight: 300;   /* Header Light */
+  text-transform: uppercase; /* Header Uppercase */
+  letter-spacing: 0.18em;
+}
