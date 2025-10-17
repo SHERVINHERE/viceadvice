@@ -15,36 +15,24 @@ html, body {
   font-weight: 400; /* Body Regular */
 }
 
-.wrap{
-  min-height: 100%;
-  display: grid;
-  place-items: center;
-  padding: 6vh 4vw;
-  gap: 3rem;
-}
-
-/* Hero image (16:9 portrait) responsive sizing */
-.hero{
-  width: min(80vw, 520px);
-  height: auto;
-  display: block;
-  border: 0;
-  /* Ensures no white outline or unexpected gaps on some browsers */
-  background: black;
-}
-
-/* Links row */
+/* Fixed links row at top-center so they're always visible */
 .links{
+  position: fixed;
+  top: clamp(20px, 4vh, 60px);
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   gap: clamp(1rem, 4vw, 2.5rem);
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
+  padding: 0 .75rem;
+  z-index: 10;
+  pointer-events: auto;
 }
 
-/* Page Link Regular */
+/* Page Link — Regular */
 .link{
-  font-weight: 400;
+  font-weight: 400;            /* Regular */
   text-decoration: none;
   color: white;
   text-transform: none;
@@ -52,16 +40,37 @@ html, body {
   font-size: clamp(1rem, 2.2vw, 1.25rem);
   padding-bottom: 2px;
   border-bottom: 1px solid transparent;
-  transition: opacity .2s ease, border-color .2s ease;
+  transition: opacity .2s ease, border-color .2s ease, transform .1s ease;
+  text-shadow: 0 0 10px rgba(0,0,0,.35); /* readable over any image edge */
 }
 .link:hover,
 .link:focus{
-  opacity: .85;
+  opacity: .9;
   border-color: rgba(255,255,255,.25);
   outline: none;
+  transform: translateY(-1px);
 }
 
-/* Utility header style if needed anywhere */
+/* Center the image in the viewport, with top padding to avoid overlap with fixed nav */
+.wrap{
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14vh 4vw; /* top space so the image doesn't sit under the links */
+}
+
+/* Hero image (16:9 portrait) responsive sizing */
+.hero{
+  width: min(90vw, 520px);
+  max-height: 80vh; /* prevents overflow on short screens/phones */
+  height: auto;
+  display: block;
+  border: 0;
+  background: black; /* prevents white edge artifacts */
+}
+
+/* Optional header treatment if used elsewhere */
 .hdr{
   font-weight: 300;   /* Header Light */
   text-transform: uppercase; /* Header Uppercase */
