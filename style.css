@@ -60,15 +60,19 @@ html, body {
   padding: 14vh 4vw; /* top space so the image doesn't sit under the links */
 }
 
-/* Hero image (16:9 portrait) responsive sizing */
-.hero{
-  width: min(90vw, 520px);
-  max-height: 80vh; /* prevents overflow on short screens/phones */
-  height: auto;
+/* Hero image (portrait 16:9) — always preserves ratio and centers responsively */
+.hero {
+  max-width: 90vw;            /* never exceed viewport width */
+  max-height: 80vh;           /* never exceed viewport height */
+  width: auto;                /* scale proportionally */
+  height: auto;               /* maintain original ratio */
   display: block;
+  margin: 0 auto;             /* center horizontally */
+  object-fit: contain;        /* ensures proper containment without stretching */
   border: 0;
-  background: black; /* prevents white edge artifacts */
+  background: black;          /* avoids white edges */
 }
+
 
 /* Optional header treatment if used elsewhere */
 .hdr{
