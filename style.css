@@ -15,33 +15,43 @@ html, body {
   font-weight: 400; /* Body Regular */
 }
 
-/* Fixed links row at top-center so they're always visible */
+/* Fixed links row at top-center */
 .links{
   position: fixed;
   top: clamp(20px, 4vh, 60px);
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: clamp(1rem, 4vw, 2.5rem);
   align-items: center;
   justify-content: center;
+  gap: clamp(0.5rem, 2vw, 1.5rem);
   padding: 0 .75rem;
   z-index: 10;
-  pointer-events: auto;
 }
 
-/* Page Link — Regular */
+/* Dot separators */
+.dot {
+  color: rgba(255,255,255,0.6);
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  line-height: 1;
+  user-select: none;
+}
+
+/* Page Link Regular — uniform width & visual consistency */
 .link{
+  display: inline-block;
+  min-width: 90px;             /* ensures even width balance for short labels */
+  text-align: center;
   font-weight: 400;            /* Regular */
   text-decoration: none;
   color: white;
-  text-transform: none;
-  letter-spacing: 0.02em;
-  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
   padding-bottom: 2px;
   border-bottom: 1px solid transparent;
   transition: opacity .2s ease, border-color .2s ease, transform .1s ease;
-  text-shadow: 0 0 10px rgba(0,0,0,.35); /* readable over any image edge */
+  text-shadow: 0 0 10px rgba(0,0,0,.35);
 }
 .link:hover,
 .link:focus{
@@ -51,32 +61,31 @@ html, body {
   transform: translateY(-1px);
 }
 
-/* Center the image in the viewport, with top padding to avoid overlap with fixed nav */
+/* Center the image in the viewport, responsive on all screens */
 .wrap{
   min-height: 100svh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 14vh 4vw; /* top space so the image doesn't sit under the links */
+  padding: 14vh 4vw;
 }
 
-/* Hero image (portrait 16:9) — always preserves ratio and centers responsively */
+/* Hero image (portrait 16:9) — preserves ratio and scales properly */
 .hero {
-  max-width: 90vw;            /* never exceed viewport width */
-  max-height: 80vh;           /* never exceed viewport height */
-  width: auto;                /* scale proportionally */
-  height: auto;               /* maintain original ratio */
+  max-width: 90vw;
+  max-height: 80vh;
+  width: auto;
+  height: auto;
   display: block;
-  margin: 0 auto;             /* center horizontally */
-  object-fit: contain;        /* ensures proper containment without stretching */
+  margin: 0 auto;
+  object-fit: contain;
   border: 0;
-  background: black;          /* avoids white edges */
+  background: black;
 }
 
-
-/* Optional header treatment if used elsewhere */
+/* Optional header styling if reused elsewhere */
 .hdr{
   font-weight: 300;   /* Header Light */
-  text-transform: uppercase; /* Header Uppercase */
+  text-transform: uppercase;
   letter-spacing: 0.18em;
 }
