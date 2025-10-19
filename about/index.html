@@ -21,7 +21,7 @@
 
   <!-- Centered text, no title -->
   <main class="wrap">
-    <p class="about-quote" style="
+    <p id="quote" class="about-quote" style="
       margin: 0;
       text-align: center;
       max-width: 60ch;
@@ -33,5 +33,19 @@
       Growth is not purity, it’s awareness.
     </p>
   </main>
+
+  <!-- Random quote (inline array) -->
+  <script>
+    (function () {
+      const QUOTES = [
+        "Growth is not purity, it’s awareness.",
+        "What you are hiding, is gaining power."
+      ];
+      const el = document.getElementById("quote");
+      if (!el || QUOTES.length === 0) return;
+      const pick = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+      if (pick && typeof pick === "string") el.textContent = pick;
+    })();
+  </script>
 </body>
 </html>
