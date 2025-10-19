@@ -3,53 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ViceAdvice</title>
+  <title>About — ViceAdvice</title>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="style.css" />
+  <!-- Use the same site styles -->
+  <link rel="stylesheet" href="../style.css" />
 </head>
 <body>
-  <!-- Fixed, always-visible top-center links -->
-  <nav class="links" aria-label="Primary">
-    <a class="link" href="about/">ABOUT</a>
-    <span class="dot">•</span>
-    <a class="link" href="https://x.com/viceandadvice" target="_blank" rel="noopener">X</a>
-    <span class="dot">•</span>
-    <a class="link" href="https://forms.gle/2WYfWr1hBGxqPJsTA" target="_blank" rel="noopener">EARLY ACCESS</a>
+  <!-- Top-centered back arrow (same position/style as landing page nav) -->
+  <nav class="links" aria-label="Back">
+    <a class="link" href="../" aria-label="Back to Home">←</a>
   </nav>
 
-  <!-- Centered hero image (portrait 16:9) -->
+  <!-- Centered text, no title -->
   <main class="wrap">
-    <!-- Default image (gets replaced by JS) -->
-    <img class="hero" src="media/cover1.jpg" alt="ViceAdvice cover image" />
+    <p class="about-quote" style="
+      margin: 0;
+      text-align: center;
+      max-width: 60ch;
+      line-height: 1.6;
+      letter-spacing: 0.02em;
+      font-weight: 400;
+      font-size: clamp(1rem, 2.2vw, 1.4rem);
+    ">
+      Growth is not purity, it’s awareness.
+    </p>
   </main>
-
-  <!-- Random cover picker: cover1.jpg ... cover10.jpg in /media -->
-  <script>
-    (function () {
-      const img = document.querySelector('.hero');
-      if (!img) return;
-
-      // List of candidate filenames
-      const covers = Array.from({ length: 10 }, (_, i) => `cover${i + 1}.jpg`);
-
-      // Pick one at random
-      const pick = covers[Math.floor(Math.random() * covers.length)];
-
-      // If chosen image fails, show cover1.jpg
-      img.onerror = () => {
-        img.onerror = null; // prevent infinite loop
-        img.src = "media/cover1.jpg";
-      };
-
-      // Load the random one
-      img.src = `media/${pick}`;
-    })();
-  </script>
 </body>
 </html>
