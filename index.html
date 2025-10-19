@@ -25,7 +25,31 @@
 
   <!-- Centered hero image (portrait 16:9) -->
   <main class="wrap">
-    <img class="hero" src="media/landingPage_cover.jpg" alt="ViceAdvice cover image" />
+    <!-- Default image (gets replaced by JS) -->
+    <img class="hero" src="media/cover1.jpg" alt="ViceAdvice cover image" />
   </main>
+
+  <!-- Random cover picker: cover1.jpg ... cover10.jpg in /media -->
+  <script>
+    (function () {
+      const img = document.querySelector('.hero');
+      if (!img) return;
+
+      // List of candidate filenames
+      const covers = Array.from({ length: 10 }, (_, i) => `cover${i + 1}.jpg`);
+
+      // Pick one at random
+      const pick = covers[Math.floor(Math.random() * covers.length)];
+
+      // If chosen image fails, show cover1.jpg
+      img.onerror = () => {
+        img.onerror = null; // prevent infinite loop
+        img.src = "media/cover1.jpg";
+      };
+
+      // Load the random one
+      img.src = `media/${pick}`;
+    })();
+  </script>
 </body>
 </html>
