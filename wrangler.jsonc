@@ -1,0 +1,11 @@
+// Cloudflare config for www.viceadvice.com: a static site served by Cloudflare Workers.
+// Cloudflare builds and deploys it automatically on every push to main (Workers Builds, connected in the dashboard).
+// The Worker name in the Cloudflare dashboard must be "viceadvice" (same as below).
+{
+  "name": "viceadvice",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./",
+    "html_handling": "auto-trailing-slash"
+  }
+}

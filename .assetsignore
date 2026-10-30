@@ -1,0 +1,7 @@
+# files in this repo that should NOT be published on the website
+.git
+.github
+.assetsignore
+wrangler.jsonc
+CNAME
+README*
