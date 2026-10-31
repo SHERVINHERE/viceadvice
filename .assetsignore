@@ -1,6 +1,6 @@
-# files in this repo that should NOT be published on the website
 .git
 .github
+.wrangler
 .assetsignore
 wrangler.jsonc
 CNAME
