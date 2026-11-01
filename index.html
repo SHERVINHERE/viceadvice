@@ -14,41 +14,41 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Fixed, always-visible top-center links -->
-  <nav class="links" aria-label="Primary">
-    <a class="link" href="about/">ABOUT</a>
-    <span class="dot">•</span>
-    <a class="link" href="https://x.com/viceandadvice" target="_blank" rel="noopener">X</a>
-    <span class="dot">•</span>
-    <a class="link" href="https://forms.gle/2WYfWr1hBGxqPJsTA" target="_blank" rel="noopener">EARLY ACCESS</a>
-  </nav>
-
-  <!-- Centered hero image (portrait 16:9) -->
+  <!-- Centered cover image (picked by the script below) -->
   <main class="wrap">
-    <!-- Default image (gets replaced by JS) -->
-    <img class="hero" src="media/cover1.jpg" alt="ViceAdvice cover image" />
+    <img class="hero" alt="ViceAdvice cover image" />
   </main>
 
-  <!-- Random cover picker: cover1.jpg ... cover10.jpg in /media -->
+  <!-- Weighted random cover.
+       Settings: media/covers.json -> { "images": [ { "file": "cover1.jpg", "weight": 5 } ] }
+       weight = chance 0-10 (0 = never shown, 10 = most likely). -->
   <script>
     (function () {
       const img = document.querySelector('.hero');
       if (!img) return;
+      const FALLBACK = 'media/cover1.jpg';
 
-      // List of candidate filenames
-      const covers = Array.from({ length: 10 }, (_, i) => `cover${i + 1}.jpg`);
+      function show(src) {
+        img.onerror = () => { img.onerror = null; img.src = FALLBACK; };
+        img.src = src;
+      }
 
-      // Pick one at random
-      const pick = covers[Math.floor(Math.random() * covers.length)];
+      function pick(list) {
+        const items = (list || []).filter(i => i && i.file && Number(i.weight) > 0);
+        const total = items.reduce((s, i) => s + Math.min(10, Number(i.weight)), 0);
+        if (!total) return null;
+        let r = Math.random() * total;
+        for (const i of items) {
+          r -= Math.min(10, Number(i.weight));
+          if (r < 0) return 'media/' + i.file;
+        }
+        return 'media/' + items[items.length - 1].file;
+      }
 
-      // If chosen image fails, show cover1.jpg
-      img.onerror = () => {
-        img.onerror = null; // prevent infinite loop
-        img.src = "media/cover1.jpg";
-      };
-
-      // Load the random one
-      img.src = `media/${pick}`;
+      fetch('media/covers.json', { cache: 'no-store' })
+        .then(r => r.ok ? r.json() : null)
+        .then(cfg => show(pick(cfg && cfg.images) || FALLBACK))
+        .catch(() => show(FALLBACK));
     })();
   </script>
 </body>
