@@ -4,11 +4,7 @@
     { "file": "cover2.jpg", "weight": 5 },
     { "file": "cover3.jpg", "weight": 5 },
     { "file": "cover4.jpg", "weight": 5 },
-    { "file": "cover5.jpg", "weight": 5 },
-    { "file": "cover6.jpg", "weight": 5 },
-    { "file": "cover7.jpg", "weight": 5 },
     { "file": "cover8.jpg", "weight": 5 },
-    { "file": "cover9.jpg", "weight": 5 },
     { "file": "cover10.jpg", "weight": 5 }
   ]
 }
