@@ -94,7 +94,7 @@
   }
 
   // Enter: highlighted row, or one clear match, opens it.
-  // Otherwise list all matches, then "did you mean…", then "nothing here".
+  // Otherwise list all matches, then "did you mean", then "nothing here yet".
   function submit(raw) {
     clearTimeout(t);
     if (active >= 0 && current[active]) return go(current[active]);
@@ -104,8 +104,8 @@
     if (decision.type === 'go') return go(decision.entry);
     if (decision.type === 'list') return showList(results.map((r) => r.entry));
     const near = SiteSearch.closest(INDEX, raw);
-    if (near.length) return showList(near, 'did you mean…');
-    out.replaceChildren(note('nothing here… yet.'));
+    if (near.length) return showList(near, 'Did you mean');
+    out.replaceChildren(note('Nothing here yet'));
     current = [];
   }
 

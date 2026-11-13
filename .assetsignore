@@ -3,5 +3,6 @@
 .wrangler
 .assetsignore
 wrangler.jsonc
+worker
 CNAME
 README*

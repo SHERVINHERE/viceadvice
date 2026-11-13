@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Command Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #000;
+      --panel: #0b0a08;
+      --line: rgba(201, 172, 96, .18);
+      --line-strong: rgba(201, 172, 96, .45);
+      --fg: #c9ac60;
+      --text: #ece2c6;
+      --muted: rgba(201, 172, 96, .6);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: var(--bg); color: var(--text); font-family: "Josefin Sans", system-ui, sans-serif; font-weight: 300; }
+    button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+    .app { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+    .side { border-right: 1px solid var(--line); padding: 28px 20px; }
+    .brand { font-size: 12px; letter-spacing: .28em; text-transform: uppercase; color: var(--fg); margin: 0 0 32px; }
+    .nav a { display: block; padding: 9px 12px; border-radius: 8px; color: var(--muted); text-decoration: none; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; }
+    .nav a.on { color: var(--fg); background: rgba(201, 172, 96, .07); }
+
+    main { padding: 28px clamp(16px, 4vw, 48px) 64px; }
+    .head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 6px; }
+    h1 { margin: 0; font-weight: 300; font-size: 15px; letter-spacing: .24em; text-transform: uppercase; color: var(--fg); }
+    .status { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); opacity: 0; transition: opacity .3s; }
+    .status.show { opacity: 1; }
+    .status.err { color: #d98a6a; }
+    .sub { margin: 0 0 28px; font-size: 13px; color: var(--muted); letter-spacing: .04em; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 16px; }
+    .card { position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; transition: border-color .2s; }
+    .card:hover { border-color: var(--line-strong); }
+    .thumb { aspect-ratio: 3 / 4; background: #000; display: flex; align-items: center; justify-content: center; }
+    .thumb img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; transition: opacity .2s; }
+    .card.off .thumb img { opacity: .25; }
+    .remove { position: absolute; top: 6px; right: 6px; width: 24px; height: 24px; border-radius: 50%; background: rgba(0,0,0,.7); color: var(--muted); font-size: 14px; line-height: 24px; opacity: 0; transition: opacity .2s, color .2s; }
+    .card:hover .remove, .remove:focus-visible { opacity: 1; }
+    .remove:hover { color: var(--text); }
+
+    .ctrl { padding: 10px 12px 12px; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 10px; }
+    .name { grid-column: 1 / -1; font-size: 11px; color: var(--muted); letter-spacing: .04em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .val { font-size: 12px; color: var(--fg); min-width: 52px; text-align: right; font-variant-numeric: tabular-nums; }
+    .val small { color: var(--muted); font-size: 10px; margin-left: 3px; }
+
+    /* small, quiet slider */
+    input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 14px; background: transparent; margin: 0; }
+    input[type=range]::-webkit-slider-runnable-track { height: 2px; background: var(--line); border-radius: 2px; }
+    input[type=range]::-moz-range-track { height: 2px; background: var(--line); border-radius: 2px; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 10px; height: 10px; margin-top: -4px; border-radius: 50%; background: var(--fg); border: 0; }
+    input[type=range]::-moz-range-thumb { width: 10px; height: 10px; border-radius: 50%; background: var(--fg); border: 0; }
+    input[type=range]:focus-visible { outline: none; }
+    input[type=range]:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px rgba(201,172,96,.2); }
+
+    .add { border: 1px dashed var(--line-strong); border-radius: 12px; min-height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--muted); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; aspect-ratio: 3 / 4.6; transition: color .2s, border-color .2s; }
+    .add:hover, .add.drag { color: var(--fg); border-color: var(--fg); }
+    .add span:first-child { font-size: 22px; letter-spacing: 0; }
+
+    @media (max-width: 720px) {
+      .app { grid-template-columns: 1fr; }
+      .side { border-right: 0; border-bottom: 1px solid var(--line); padding: 16px; display: flex; align-items: center; gap: 16px; overflow-x: auto; }
+      .brand { margin: 0; white-space: nowrap; }
+      .nav { display: flex; gap: 4px; }
+      .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .remove { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="side">
+      <p class="brand">Command Center</p>
+      <nav class="nav"><a href="#images" class="on">Landing images</a></nav>
+    </aside>
+
+    <main id="images">
+      <div class="head">
+        <h1>Landing images</h1>
+        <span class="status" id="status" role="status"></span>
+      </div>
+      <p class="sub">Chance each image shows on the first page. 0 = never.</p>
+      <div class="grid" id="grid"></div>
+      <input type="file" id="file" accept="image/jpeg,image/png,image/webp" multiple hidden />
+    </main>
+  </div>
+
+  <script>
+  (function () {
+    const grid = document.getElementById('grid');
+    const fileInput = document.getElementById('file');
+    const statusEl = document.getElementById('status');
+    let images = [];
+    let saveTimer, statusTimer;
+
+    function status(text, err) {
+      clearTimeout(statusTimer);
+      statusEl.textContent = text;
+      statusEl.classList.toggle('err', !!err);
+      statusEl.classList.add('show');
+      if (!err) statusTimer = setTimeout(() => statusEl.classList.remove('show'), 1600);
+    }
+
+    async function api(path, opts = {}) {
+      const res = await fetch('/admin/api/' + path, { ...opts, headers: { 'x-va': '1', ...(opts.headers || {}) }, credentials: 'same-origin' });
+      if (res.status === 403) { location.reload(); throw new Error('signed out'); }
+      const j = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(j.error || ('error ' + res.status));
+      return j;
+    }
+
+    const src = (file) => '/media/' + file;
+    const total = () => images.reduce((s, i) => s + (i.weight || 0), 0);
+    const pct = (w) => { const t = total(); return t ? Math.round((w / t) * 100) + '%' : '0%'; };
+
+    function el(tag, attrs = {}, ...kids) {
+      const e = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs)) {
+        if (k.startsWith('on')) e.addEventListener(k.slice(2), v); else if (v !== false) e.setAttribute(k, v);
+      }
+      e.append(...kids);
+      return e;
+    }
+
+    function refreshPercents() {
+      grid.querySelectorAll('.card').forEach((c, i) => {
+        const w = images[i].weight;
+        c.querySelector('.val').innerHTML = `${w}<small>${pct(w)}</small>`;
+        c.classList.toggle('off', w === 0);
+      });
+    }
+
+    function render() {
+      const cards = images.map((img, i) => {
+        const range = el('input', { type: 'range', min: '0', max: '10', step: '1', value: String(img.weight), 'aria-label': 'Chance for ' + img.file,
+          oninput: (e) => { images[i].weight = Number(e.target.value); refreshPercents(); queueSave(); } });
+        return el('div', { class: 'card' + (img.weight === 0 ? ' off' : '') },
+          el('div', { class: 'thumb' }, el('img', { src: src(img.file), alt: '', loading: 'lazy' })),
+          el('button', { class: 'remove', title: 'Remove', 'aria-label': 'Remove ' + img.file, onclick: () => remove(i) }, '×'),
+          el('div', { class: 'ctrl' },
+            el('div', { class: 'name' }, img.file.replace(/^u\//, '')),
+            range,
+            el('div', { class: 'val' })));
+      });
+      const add = el('button', { class: 'add', onclick: () => fileInput.click() }, el('span', {}, '+'), el('span', {}, 'Add images'));
+      ['dragenter', 'dragover'].forEach((t) => add.addEventListener(t, (e) => { e.preventDefault(); add.classList.add('drag'); }));
+      ['dragleave', 'drop'].forEach((t) => add.addEventListener(t, () => add.classList.remove('drag')));
+      add.addEventListener('drop', (e) => { e.preventDefault(); upload([...e.dataTransfer.files]); });
+      grid.replaceChildren(...cards, add);
+      refreshPercents();
+    }
+
+    function queueSave() {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(save, 500);
+    }
+
+    async function save() {
+      try {
+        const j = await api('covers', { method: 'PUT', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ images }) });
+        images = j.images;
+        status('Saved');
+      } catch (e) { status('Not saved — ' + e.message, true); }
+    }
+
+    async function remove(i) {
+      const name = images[i].file.replace(/^u\//, '');
+      if (!confirm('Remove ' + name + ' from the first page?')) return;
+      images.splice(i, 1);
+      render();
+      clearTimeout(saveTimer);
+      await save();
+    }
+
+    // Shrink big photos before uploading (long side 2400px), keeps the site fast
+    function shrink(file) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+        img.onload = () => {
+          const max = 2400;
+          const scale = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+          if (scale === 1 && file.size < 1.5e6) { URL.revokeObjectURL(url); return resolve(file); }
+          const c = document.createElement('canvas');
+          c.width = Math.round(img.naturalWidth * scale);
+          c.height = Math.round(img.naturalHeight * scale);
+          c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+          URL.revokeObjectURL(url);
+          c.toBlob((b) => resolve(b && b.type === 'image/webp' ? b : file), 'image/webp', 0.88);
+        };
+        img.onerror = () => { URL.revokeObjectURL(url); resolve(file); };
+        img.src = url;
+      });
+    }
+
+    async function upload(files) {
+      files = files.filter((f) => /^image\/(jpeg|png|webp)$/.test(f.type));
+      if (!files.length) return status('jpg, png or webp only', true);
+      for (let n = 0; n < files.length; n++) {
+        status(`Uploading ${n + 1} of ${files.length}…`);
+        try {
+          const blob = await shrink(files[n]);
+          const j = await api('upload', { method: 'POST', headers: { 'content-type': blob.type, 'x-filename': encodeURIComponent(files[n].name) }, body: blob });
+          images = j.images;
+          render();
+        } catch (e) { return status('Upload failed — ' + e.message, true); }
+      }
+      status('Saved');
+    }
+
+    fileInput.addEventListener('change', () => { upload([...fileInput.files]); fileInput.value = ''; });
+
+    api('covers').then((j) => { images = j.images || []; render(); }).catch((e) => status('Could not load — ' + e.message, true));
+  })();
+  </script>
+</body>
+</html>

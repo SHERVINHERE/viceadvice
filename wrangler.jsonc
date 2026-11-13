@@ -1,15 +1,28 @@
-// Cloudflare config for www.viceadvice.com: a static site served by Cloudflare Workers.
+// Cloudflare config for www.viceadvice.com.
 // Cloudflare builds and deploys it automatically on every push to main (Workers Builds, connected in the dashboard).
 // The Worker name in the Cloudflare dashboard must be "viceadvice" (same as below).
+//  - Site files are served straight from this repo.
+//  - worker/worker.js only runs for the Command Center (/admin) and the landing-image list/uploads.
 // Security: the site is only reachable on viceadvice.com. The *.workers.dev and preview
 // addresses are switched off so nothing can skip the Cloudflare Access lock on /admin.
 {
   "name": "viceadvice",
+  "main": "worker/worker.js",
   "compatibility_date": "2025-09-01",
   "workers_dev": false,
   "preview_urls": false,
   "assets": {
     "directory": "./",
-    "html_handling": "auto-trailing-slash"
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash",
+    "run_worker_first": ["/admin", "/admin/*", "/media/covers.json", "/media/u/*"]
+  },
+  "kv_namespaces": [
+    { "binding": "KV", "id": "5068707167934b8f92c6ad2e0dadc633" }   // "viceadvice-data"
+  ],
+  "vars": {
+    // Cloudflare Access app "Vice Advice Command Center" (not secret: used to check Access's signed pass)
+    "ACCESS_TEAM": "https://jolly-waterfall-fad3.cloudflareaccess.com",
+    "ACCESS_AUD": "bbaa942322734888d90600f78ba0a7dac5e876992f2efd33f324f3d48f387141"
   }
 }
