@@ -7,7 +7,7 @@
   <title>Command Center</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #000;
@@ -17,20 +17,22 @@
       --fg: #c9ac60;
       --text: #ece2c6;
       --muted: rgba(201, 172, 96, .6);
+      --font-display: "Cormorant Garamond", Garamond, "Times New Roman", serif;
+      --font-text: "Jost", "Futura", "Avenir Next", system-ui, sans-serif;
     }
     * { box-sizing: border-box; }
-    html, body { margin: 0; min-height: 100%; background: var(--bg); color: var(--text); font-family: "Josefin Sans", system-ui, sans-serif; font-weight: 300; }
+    html, body { margin: 0; min-height: 100%; background: var(--bg); color: var(--text); font-family: var(--font-text); font-weight: 300; }
     button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
 
     .app { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
     .side { border-right: 1px solid var(--line); padding: 28px 20px; }
-    .brand { font-size: 12px; letter-spacing: .28em; text-transform: uppercase; color: var(--fg); margin: 0 0 32px; }
-    .nav a { display: block; padding: 9px 12px; border-radius: 8px; color: var(--muted); text-decoration: none; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; }
+    .brand { font-family: var(--font-display); font-weight: 500; font-size: 15px; letter-spacing: .26em; text-transform: uppercase; color: var(--fg); margin: 0 0 32px; }
+    .nav a { display: block; padding: 9px 12px; border-radius: 8px; color: var(--muted); text-decoration: none; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; }
     .nav a.on { color: var(--fg); background: rgba(201, 172, 96, .07); }
 
     main { padding: 28px clamp(16px, 4vw, 48px) 64px; }
     .head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 6px; }
-    h1 { margin: 0; font-weight: 300; font-size: 15px; letter-spacing: .24em; text-transform: uppercase; color: var(--fg); }
+    h1 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 22px; letter-spacing: .2em; text-transform: uppercase; color: var(--fg); }
     .status { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); opacity: 0; transition: opacity .3s; }
     .status.show { opacity: 1; }
     .status.err { color: #d98a6a; }
